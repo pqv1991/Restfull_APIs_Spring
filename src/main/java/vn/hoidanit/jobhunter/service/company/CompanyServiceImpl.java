@@ -1,7 +1,11 @@
 package vn.hoidanit.jobhunter.service.company;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.dto.Meta;
+import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
 import java.util.List;
@@ -22,8 +26,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> handleGetAllCompanies() {
-        return companyRepository.findAll();
+    public ResultPaginationDTO handleGetAllCompanies(Pageable pageable) {
+        Page<Company> companyPage = companyRepository.findAll(pageable);
+        return new ResultPaginationDTO(
+                new Meta(companyPage.getNumber()+1,companyPage.getSize(),companyPage.getTotalPages(),companyPage.getTotalElements())
+                ,companyPage.getContent()
+        ) ;
     }
 
     @Override
