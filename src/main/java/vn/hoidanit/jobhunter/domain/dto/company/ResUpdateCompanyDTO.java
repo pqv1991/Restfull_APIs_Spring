@@ -1,5 +1,6 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.dto.company;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,6 @@ public class ResUpdateCompanyDTO {
     private String description;
     private String address;
     private String logo;
-    private Instant updateAt;
-    private String  updateBy;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    private Instant  updateAt;
 }

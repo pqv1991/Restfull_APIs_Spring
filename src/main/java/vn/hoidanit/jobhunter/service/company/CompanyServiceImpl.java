@@ -5,12 +5,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
-import vn.hoidanit.jobhunter.domain.dto.Meta;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.dto.company.ResCompanyDTO;
+import vn.hoidanit.jobhunter.domain.dto.pagination.Meta;
+import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.dto.user.ResUserDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -27,13 +31,37 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResultPaginationDTO handleGetAllCompanies(Specification<Company> specification,Pageable pageable) {
-        Page<Company> companyPage = companyRepository.findAll(specification,pageable);
-        return new ResultPaginationDTO(
-                new Meta(pageable.getPageNumber()+1,pageable.getPageSize(),companyPage.getTotalPages(),companyPage.getTotalElements())
-                ,companyPage.getContent()
-        ) ;
+    public ResultPaginationDTO fetchGetAllCompanies(Specification<Company> specification,Pageable pageable) {
+        Page<Company> userPage =this.companyRepository.findAll(specification,pageable);
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta mt = new Meta();
+        mt.setPage(pageable.getPageNumber()+1);
+        mt.setPageSize(pageable.getPageSize());
+        mt.setPages(userPage.getTotalPages());
+        mt.setTotal(userPage.getTotalElements());
+        rs.setMeta(mt);
+        List<ResCompanyDTO> listCompanyDTO = userPage.getContent().stream().map(item-> new ResCompanyDTO(
+                        item.getId(),
+                        item.getName(),
+                        item.getLogo(),
+                        item.getDescription(),
+                        item.getAddress(),
+                        item.getCreatedAt(),
+                        item.getUpdatedAt())).collect(Collectors.toList());
+
+        rs.setResult(listCompanyDTO);
+        return rs;
     }
+
+    @Override
+    public Company fetchGetCompanyById(long id) {
+        Optional<Company> company = companyRepository.findById(id);
+        if(company.isPresent()){
+            return company.get();
+        }
+        return null;
+    }
+
 
     @Override
     public void handleDeleteCompany(long id) {
@@ -55,5 +83,10 @@ public class CompanyServiceImpl implements CompanyService {
             return companyRepository.save(companyUpdate);
         }
         return null;
+    }
+
+    @Override
+    public Boolean isNameExist(String name) {
+        return companyRepository.existsByName(name);
     }
 }

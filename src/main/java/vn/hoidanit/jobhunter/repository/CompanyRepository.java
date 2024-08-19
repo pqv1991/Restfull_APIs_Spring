@@ -8,4 +8,6 @@ import vn.hoidanit.jobhunter.domain.Company;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company,Long>, JpaSpecificationExecutor<Company> {
 
+    Boolean existsByName(String name);
+
 }

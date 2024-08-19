@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.AuditListener.AuditTrailListener;
-import vn.hoidanit.jobhunter.util.SecurityUtil;
+import vn.hoidanit.jobhunter.util.AuditListener.CompanyListener;
 
 import java.time.Instant;
 
@@ -15,7 +14,7 @@ import java.time.Instant;
 @Table(name = "companies")
 @Getter
 @Setter
-@EntityListeners(AuditTrailListener.class)
+@EntityListeners(CompanyListener.class)
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
