@@ -91,4 +91,14 @@ public class UserServiceImpl implements UserService{
     public boolean isEmailExist(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    @Override
+    public void updateUserToken(String token, String email) {
+        User currentUser = handleGetUserByUsername(email);
+        if(currentUser !=null){
+            currentUser.setRefreshToken(token);
+            userRepository.save(currentUser);
+        }
+    }
+
 }

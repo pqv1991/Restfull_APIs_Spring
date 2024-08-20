@@ -20,4 +20,5 @@ public interface UserService {
     public User handleGetUserByUsername(String username);
 
     public boolean isEmailExist(String email);
+    void updateUserToken(String token, String email);
 }
