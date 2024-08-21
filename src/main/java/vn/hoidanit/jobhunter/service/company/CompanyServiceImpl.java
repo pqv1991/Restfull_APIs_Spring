@@ -5,11 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
-import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.company.ResCompanyDTO;
-import vn.hoidanit.jobhunter.domain.dto.pagination.Meta;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.ResUserDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
 import java.util.List;
@@ -34,7 +31,7 @@ public class CompanyServiceImpl implements CompanyService {
     public ResultPaginationDTO fetchGetAllCompanies(Specification<Company> specification,Pageable pageable) {
         Page<Company> userPage =this.companyRepository.findAll(specification,pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new  ResultPaginationDTO.Meta();
         mt.setPage(pageable.getPageNumber()+1);
         mt.setPageSize(pageable.getPageSize());
         mt.setPages(userPage.getTotalPages());

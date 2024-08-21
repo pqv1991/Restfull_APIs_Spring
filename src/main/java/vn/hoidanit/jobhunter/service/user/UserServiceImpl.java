@@ -1,12 +1,10 @@
 package vn.hoidanit.jobhunter.service.user;
 
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.pagination.Meta;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.dto.user.ResUserDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService{
     public ResultPaginationDTO fetchAllUser(Specification<User> specification, Pageable pageable) {
         Page<User> userPage =this.userRepository.findAll(specification,pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new  ResultPaginationDTO.Meta();
         mt.setPage(pageable.getPageNumber()+1);
         mt.setPageSize(pageable.getPageSize());
         mt.setPages(userPage.getTotalPages());
