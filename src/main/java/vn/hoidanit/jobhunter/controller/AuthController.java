@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.login.LoginDTO;
+import vn.hoidanit.jobhunter.domain.dto.login.ReqLoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.login.ResLoginDTO;
 import vn.hoidanit.jobhunter.service.user.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     @ApiMessage("Fetch login")
-    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDto) {
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO loginDto) {
         // Nạp input gồm username/password vào Security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         // xác thực người dùng => cần viết hàm loadUserByUsername
