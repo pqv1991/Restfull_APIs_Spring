@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResLoginDTO {
-    private String access_token;
-    private LoginUser user;
 
+    private LoginUser user;
+    private String access_token;
     @Getter
     @Setter
     @NoArgsConstructor
@@ -19,6 +19,13 @@ public class ResLoginDTO {
         private long id;
         private String email;
         private String name;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserGetAccount{
+        private LoginUser user;
     }
 
 }

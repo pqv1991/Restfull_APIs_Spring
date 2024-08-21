@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService{
                 item.getAddress(),
                 item.getAge(),
                 item.getCreateAt(),
-                item.getUpdateAt()))
+                item.getUpdatedAt()))
                 .collect(Collectors.toList());
         rs.setResult(listUserDTO);
         return rs;
@@ -99,6 +99,11 @@ public class UserServiceImpl implements UserService{
             currentUser.setRefreshToken(token);
             userRepository.save(currentUser);
         }
+    }
+
+    @Override
+    public User getUserByRefreshTokenAndEmail(String refreshToken, String email) {
+        return userRepository.findByRefreshTokenAndEmail(refreshToken,email);
     }
 
 }

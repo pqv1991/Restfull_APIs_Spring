@@ -56,10 +56,6 @@ public class CompanyController {
         Company companyData = companyService.fetchGetCompanyById(company.getId());
         if(companyData == null){
             throw new IdInvalidException("Công ty với id= "+company.getId()+" không tồn tại!");
-        }else {
-            if(company.getName().equals(companyData.getName())){
-                throw  new IdInvalidException("Tên công ty "+company.getName()+" đã tồn tại, vui lòng chọn tên khác!");
-            }
         }
         Company companyUpdate = companyService.handleUpdateCompany(company);
         return ResponseEntity.ok().body(ConvertToResCompanyDTO.convertToResUpdateDTO(companyUpdate));

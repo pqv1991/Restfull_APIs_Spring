@@ -14,7 +14,7 @@ public class ConvertToResUserDTO {
         res.setAge(user.getAge());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
-        res.setCreateAt(user.getCreateAt());
+        res.setCreatedAt(user.getCreateAt());
 
         return res;
     }
@@ -27,7 +27,7 @@ public class ConvertToResUserDTO {
         res.setAge(user.getAge());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
-        res.setUpdateAt(user.getUpdateAt());
+        res.setUpdatedAt(user.getUpdatedAt());
         return res;
     }
 
@@ -39,8 +39,8 @@ public class ConvertToResUserDTO {
         res.setAge(user.getAge());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
-        res.setUpdateAt(user.getUpdateAt());
-        res.setUpdateAt(user.getUpdateAt());
+        res.setUpdatedAt(user.getUpdatedAt());
+        res.setUpdatedAt(user.getUpdatedAt());
         return res;
     }
 }

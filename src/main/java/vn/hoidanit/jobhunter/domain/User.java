@@ -34,9 +34,9 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant updateAt;
+    private Instant updatedAt;
     private String createBy;
-    private String updateBy;
+    private String updatedBy;
 
 
 

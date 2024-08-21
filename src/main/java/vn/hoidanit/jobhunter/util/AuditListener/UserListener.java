@@ -17,7 +17,7 @@ public class UserListener {
     }
     @PreUpdate
     private void beforeAnyUpdate(User user){
-        user.setUpdateBy(SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get():"");
-        user.setUpdateAt(Instant.now());
+        user.setUpdatedBy(SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get():"");
+        user.setUpdatedAt(Instant.now());
     }
 }

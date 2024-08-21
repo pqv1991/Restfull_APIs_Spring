@@ -13,7 +13,7 @@ public class ConvertToResCompanyDTO {
         res.setAddress(company.getAddress());
         res.setDescription(company.getDescription());
         res.setLogo(company.getLogo());
-        res.setCreateAt(company.getCreatedAt());
+        res.setCreatedAt(company.getCreatedAt());
         return res;
     }
 
@@ -24,7 +24,7 @@ public class ConvertToResCompanyDTO {
         res.setAddress(company.getAddress());
         res.setDescription(company.getDescription());
         res.setLogo(company.getLogo());
-        res.setUpdateAt(company.getUpdatedAt());
+        res.setUpdatedAt(company.getUpdatedAt());
         return res;
     }
 
@@ -35,8 +35,8 @@ public class ConvertToResCompanyDTO {
         res.setAddress(company.getAddress());
         res.setDescription(company.getDescription());
         res.setLogo(company.getLogo());
-        res.setCreateAt(company.getCreatedAt());
-        res.setUpdateAt(company.getUpdatedAt());
+        res.setCreatedAt(company.getCreatedAt());
+        res.setUpdatedAt(company.getUpdatedAt());
         return res;
     }
 

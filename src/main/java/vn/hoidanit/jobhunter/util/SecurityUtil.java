@@ -79,7 +79,7 @@ public class SecurityUtil {
     }
 
     //create token
-    public  String createAccessToken(Authentication authentication, ResLoginDTO loginDTO){
+    public  String createAccessToken(String email, ResLoginDTO loginDTO){
         Instant now = Instant.now();
         Instant validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
         // hardcode permission for testing
@@ -90,7 +90,7 @@ public class SecurityUtil {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
                 .expiresAt(validity)
-                .subject(authentication.getName())
+                .subject(email)
                 .claim("user", loginDTO.getUser())
                 .claim("permission", listAuthority)
                 .build();
