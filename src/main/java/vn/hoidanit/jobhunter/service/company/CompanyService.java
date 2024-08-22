@@ -5,10 +5,12 @@ import org.springframework.data.jpa.domain.Specification;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
 
+import java.util.Optional;
+
 public interface CompanyService {
     public Company handleCreateCompany(Company company);
     public ResultPaginationDTO fetchGetAllCompanies(Specification<Company> specification, Pageable pageable);
-    public Company fetchGetCompanyById(long id);
+    public Optional<Company> fetchGetCompanyById(long id);
     public void handleDeleteCompany(long id);
     public Company handleUpdateCompany(Company company);
     public Boolean isNameExist(String name);

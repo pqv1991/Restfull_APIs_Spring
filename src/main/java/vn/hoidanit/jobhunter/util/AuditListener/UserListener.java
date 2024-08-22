@@ -11,8 +11,8 @@ import java.time.Instant;
 public class UserListener {
     @PrePersist
     private void beforeAnyCreate(User user){
-        user.setCreateBy(SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get():"");
-        user.setCreateAt(Instant.now());
+        user.setCreatedBy(SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get():"");
+        user.setCreatedAt(Instant.now());
 
     }
     @PreUpdate

@@ -4,10 +4,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.dto.user.ResUserDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
+import vn.hoidanit.jobhunter.service.company.CompanyService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +18,20 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final CompanyService companyService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, CompanyService companyService) {
         this.userRepository = userRepository;
+        this.companyService = companyService;
     }
 
 
     @Override
     public User handleCreateUser(User user) {
+        if(user.getCompany() != null){
+            Optional<Company> company = companyService.fetchGetCompanyById(user.getCompany().getId());
+            user.setCompany(company.orElse(null));
+        }
         return this.userRepository.save(user);
     }
 
@@ -60,9 +68,12 @@ public class UserServiceImpl implements UserService{
                 item.getGender(),
                 item.getAddress(),
                 item.getAge(),
-                item.getCreateAt(),
-                item.getUpdatedAt()))
-                .collect(Collectors.toList());
+                item.getCreatedAt(),
+                item.getUpdatedAt(),
+                 new ResUserDTO.CompanyUser(
+                         item.getCompany() != null ? item.getCompany().getId() : 0,
+                         item.getCompany() != null ? item.getCompany().getName() : null
+                 ))).collect(Collectors.toList());
         rs.setResult(listUserDTO);
         return rs;
     }
@@ -74,6 +85,10 @@ public class UserServiceImpl implements UserService{
             currentUser.setAddress(reqUser.getAddress());
             currentUser.setAge(reqUser.getAge());
             currentUser.setGender(reqUser.getGender());
+            if (reqUser.getCompany() !=null) {
+                Optional<Company> company = companyService.fetchGetCompanyById(reqUser.getCompany().getId());
+                currentUser.setCompany(company.orElse(null));
+            }
             // update
             currentUser = this.userRepository.save(currentUser);
         }
@@ -102,6 +117,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByRefreshTokenAndEmail(String refreshToken, String email) {
         return userRepository.findByRefreshTokenAndEmail(refreshToken,email);
+    }
+
+    @Override
+    public List<User> fetchUsersByCompany(Company company) {
+        return userRepository.findByCompany(company);
+    }
+
+    @Override
+    public void deleteAllUsers(List<User> users) {
+        userRepository.deleteAll(users);
     }
 
 }

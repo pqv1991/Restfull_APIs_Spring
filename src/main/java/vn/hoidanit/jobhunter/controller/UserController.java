@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.convertDTO.ConvertToResUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
@@ -18,6 +19,8 @@ import vn.hoidanit.jobhunter.domain.dto.user.ResUserDTO;
 import vn.hoidanit.jobhunter.service.user.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -32,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    @ApiMessage("Fetch create user")
+    @ApiMessage("FETCH CREATE USER")
     public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) throws IdInvalidException {
         if(userService.isEmailExist(postManUser.getEmail())){
             throw new IdInvalidException("Email "+ postManUser.getEmail()+" đã tồn tại, vui lòng sử dụng email khác!");
@@ -84,6 +87,5 @@ public class UserController {
             User ericUser = this.userService.handleUpdateUser(user);
             return ResponseEntity.ok(ConvertToResUserDTO.convertToResUpdateDTO(ericUser));
         }
-
 
 }

@@ -51,10 +51,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company fetchGetCompanyById(long id) {
+    public Optional<Company> fetchGetCompanyById(long id) {
         Optional<Company> company = companyRepository.findById(id);
         if(company.isPresent()){
-            return company.get();
+            return company;
         }
         return null;
     }
