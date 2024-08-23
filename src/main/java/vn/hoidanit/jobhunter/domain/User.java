@@ -10,6 +10,7 @@ import vn.hoidanit.jobhunter.util.AuditListener.UserListener;
 import vn.hoidanit.jobhunter.util.contant.GenderEnum;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -38,6 +39,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Resume> resumes;
 
 
 

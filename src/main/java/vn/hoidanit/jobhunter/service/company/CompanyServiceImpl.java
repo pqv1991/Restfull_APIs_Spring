@@ -40,9 +40,9 @@ public class CompanyServiceImpl implements CompanyService {
         List<ResCompanyDTO> listCompanyDTO = userPage.getContent().stream().map(item-> new ResCompanyDTO(
                         item.getId(),
                         item.getName(),
-                        item.getLogo(),
                         item.getDescription(),
                         item.getAddress(),
+                        item.getLogo(),
                         item.getCreatedAt(),
                         item.getUpdatedAt())).collect(Collectors.toList());
 

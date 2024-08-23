@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.controller;
 
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -51,16 +52,21 @@ public class CompanyController {
     @DeleteMapping("/companies/{id}")
     @ApiMessage("fetch delete company")
     public ResponseEntity<Void> deleteCompany(@PathVariable("id") long id) throws IdInvalidException{
-        Optional<Company> company = companyService.fetchGetCompanyById(id);
-        if(company.isEmpty()){
-            throw new IdInvalidException("Công ty với id= "+id+" không tồn tại!");
-        }else {
-            Company com = company.get();
-            List<User> userList = userService.fetchUsersByCompany(com);
-            userService.deleteAllUsers(userList);
+        try {
+            Optional<Company> company = companyService.fetchGetCompanyById(id);
+            if(company.isEmpty()){
+                throw new IdInvalidException("Công ty với id= "+id+" không tồn tại!");
+            }else {
+                Company com = company.get();
+                List<User> userList = userService.fetchUsersByCompany(com);
+                userService.deleteAllUsers(userList);
+            }
+            companyService.handleDeleteCompany(id);
+        }catch (DataIntegrityViolationException ex){
+            throw  new IdInvalidException("Không thể xóa công ty vì tồn tại các công việc liên quan");
+
         }
 
-        companyService.handleDeleteCompany(id);
        return ResponseEntity.ok(null);
     }
     @PutMapping("/companies")
@@ -75,7 +81,7 @@ public class CompanyController {
     }
     @GetMapping("/companies/{id}")
     @ApiMessage("Fetch company get id")
-    public ResponseEntity<ResCompanyDTO> getCompanyById(@RequestParam("id") long id) throws IdInvalidException{
+    public ResponseEntity<ResCompanyDTO> getCompanyById(@PathVariable("id") long id) throws IdInvalidException{
         Optional<Company> company = companyService.fetchGetCompanyById(id);
         if(company.isEmpty()){
             throw new IdInvalidException("Công ty với id= "+company+" không tồn tại!");

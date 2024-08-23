@@ -21,8 +21,8 @@ public class ConvertToResCompanyDTO {
         ResUpdateCompanyDTO res = new ResUpdateCompanyDTO();
         res.setId(company.getId());
         res.setName(company.getName());
-        res.setAddress(company.getAddress());
         res.setDescription(company.getDescription());
+        res.setAddress(company.getAddress());
         res.setLogo(company.getLogo());
         res.setUpdatedAt(company.getUpdatedAt());
         return res;

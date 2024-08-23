@@ -43,7 +43,9 @@ public class JobServiceImpl implements JobService{
         }
         if(job.getCompany() != null){
             Optional<Company> company = companyService.fetchGetCompanyById(job.getCompany().getId());
-            job.setCompany(company.orElse(null));
+            if(company.isPresent()){
+                job.setCompany(company.get());
+            }
         }
         // create job
         Job currentJob =jobRepository.save(job);
@@ -52,31 +54,33 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public Job handleUpdateJob(Job job) {
+    public Job handleUpdateJob(Job job, Job jobJnDb) {
         if(job.getSkills()!=null){
             List<Long> idSkills = job.getSkills().stream().map(s->s.getId()).toList();
             List<Skill>  SkillDbs = skillRepository.findByIdIn(idSkills);
-            job.setSkills(SkillDbs);
+            jobJnDb.setSkills(SkillDbs);
         }
-
-        Optional<Job> jobOptional = fetchJobById(job.getId());
-        Job currentJob = jobOptional.get();
-        currentJob.setName(job.getName());
-        currentJob.setLocation(job.getLocation());
-        currentJob.setSalary(job.getSalary());
-        currentJob.setQuantity(job.getQuantity());
-        currentJob.setLevel(job.getLevel());
-        currentJob.setDescription(job.getDescription());
-        currentJob.setStartDate(job.getStartDate());
-        currentJob.setEndDate(job.getEndDate());
-        currentJob.setActive(job.isActive());
-        currentJob.setCompany(job.getCompany());
-        currentJob.setSkills(job.getSkills());
         if(job.getCompany() != null){
             Optional<Company> company = companyService.fetchGetCompanyById(job.getCompany().getId());
-            currentJob.setCompany(company.orElse(null));
+            if(company.isPresent()){
+                jobJnDb.setCompany(company.get());
+            }
+
         }
-        return jobRepository.save(currentJob);
+
+
+        jobJnDb.setName(job.getName());
+        jobJnDb.setLocation(job.getLocation());
+        jobJnDb.setSalary(job.getSalary());
+        jobJnDb.setQuantity(job.getQuantity());
+        jobJnDb.setLevel(job.getLevel());
+        jobJnDb.setDescription(job.getDescription());
+        jobJnDb.setStartDate(job.getStartDate());
+        jobJnDb.setEndDate(job.getEndDate());
+        jobJnDb.setActive(job.isActive());
+
+        Job currentUpdate = jobRepository.save(jobJnDb);
+        return     currentUpdate;
     }
 
     @Override

@@ -33,6 +33,15 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    String[] whiteList = {
+            "/api/v1",
+            "/api/v1/auth/login",
+            "/api/v1/auth/refresh",
+            "/storage/**",
+            "/api/v1/companies/**",
+            "/api/v1/jobs/**"
+    };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http
@@ -40,8 +49,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/api/v1","/api/v1/auth/login","/api/v1/auth/refresh").permitAll()
-                                 .anyRequest().authenticated())
+                                .requestMatchers(whiteList).permitAll()
+                                .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2->oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .formLogin(f -> f.disable())

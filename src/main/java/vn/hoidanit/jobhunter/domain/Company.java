@@ -23,7 +23,7 @@ public class Company {
     private long id;
     @NotBlank(message = "Company name is required!")
     private String name;
-
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
     private String address;
     private String logo;
@@ -36,6 +36,10 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Job> jobs;
+
+
+
+
 
 
 

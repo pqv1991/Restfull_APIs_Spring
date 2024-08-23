@@ -15,7 +15,7 @@ public interface JobService {
 
     Job handleCreateJob(Job job);
 
-    Job handleUpdateJob(Job job);
+    Job handleUpdateJob(Job job, Job jobInDb);
 
     void handleDeleteJob(long id);
 

@@ -43,6 +43,9 @@ public class Job {
     @JoinTable(name = "job_skill",joinColumns = @JoinColumn(name = "job_id"),inverseJoinColumns = @JoinColumn(name = "skill_id"))
     @JsonIgnoreProperties(value = {"jobs"})
     private List<Skill> skills;
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Resume> resumes;
 
 
 
