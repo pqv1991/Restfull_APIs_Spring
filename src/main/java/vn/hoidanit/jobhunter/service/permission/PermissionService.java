@@ -18,4 +18,6 @@ public interface PermissionService {
     void deleteById(long id);
 
     boolean isPermissionExist(Permission permission);
+
+    boolean isSameName(Permission permission);
 }

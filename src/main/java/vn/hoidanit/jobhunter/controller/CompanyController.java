@@ -28,7 +28,6 @@ import java.util.Optional;
 public class CompanyController {
     private final CompanyService companyService;
     private final UserService userService;
-
     public CompanyController(CompanyService companyService, UserService userService) {
         this.companyService = companyService;
         this.userService = userService;
@@ -86,6 +85,6 @@ public class CompanyController {
         if(company.isEmpty()){
             throw new IdInvalidException("Công ty với id= "+company+" không tồn tại!");
         }
-        return ResponseEntity.ok().body(ConvertToResCompanyDTO.convertToResDTO(company.get()));
+        return ResponseEntity.ok().body(ConvertToResCompanyDTO.convertToResCompanyDTO(company.get()));
     }
 }

@@ -41,9 +41,9 @@ public class RoleController {
         if (optionalRole.isEmpty()){
             new IdInvalidException("Role voi "+ role.getId()+" khong ton tai!");
         }
-        if(roleService.isNameExist(role.getName())){
-            throw  new IdInvalidException("Role da ton tai!");
-        }
+//        if(roleService.isNameExist(role.getName())){
+//            throw  new IdInvalidException("Role da ton tai!");
+//        }
         return ResponseEntity.ok().body(roleService.handleUpdateRole(role));
     }
 

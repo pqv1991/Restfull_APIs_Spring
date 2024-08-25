@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.dto.company.ResCompanyDTO;
+import vn.hoidanit.jobhunter.domain.dto.convertDTO.ConvertToResCompanyDTO;
 import vn.hoidanit.jobhunter.domain.dto.pagination.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
@@ -37,15 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
         mt.setPages(userPage.getTotalPages());
         mt.setTotal(userPage.getTotalElements());
         rs.setMeta(mt);
-        List<ResCompanyDTO> listCompanyDTO = userPage.getContent().stream().map(item-> new ResCompanyDTO(
-                        item.getId(),
-                        item.getName(),
-                        item.getDescription(),
-                        item.getAddress(),
-                        item.getLogo(),
-                        item.getCreatedAt(),
-                        item.getUpdatedAt())).collect(Collectors.toList());
-
+        List<ResCompanyDTO> listCompanyDTO = userPage.getContent().stream().map(item-> ConvertToResCompanyDTO.convertToResCompanyDTO(item)).collect(Collectors.toList());
         rs.setResult(listCompanyDTO);
         return rs;
     }
@@ -65,8 +58,6 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.deleteById(id);
 
     }
-
-
 
     @Override
     public Company handleUpdateCompany(Company company) {

@@ -66,6 +66,18 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionRepository.existsByMethodAndApiPathAndModule(permission.getMethod(), permission.getApiPath(), permission.getModule());
 
     }
+
+    @Override
+    public boolean isSameName(Permission permission) {
+        Permission  permissionDB = fetchPermissionById(permission.getId()).get();
+        if(permission != null){
+            if(permissionDB.getName().equals(permission.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void deleteById(long id) {
 

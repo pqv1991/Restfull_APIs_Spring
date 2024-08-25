@@ -39,7 +39,9 @@ public class PermissionController {
             throw  new IdInvalidException("Permission voi id "+ permission.getId()+" khong ton tai!");
         }
         if(permissionService.isPermissionExist(permission)){
-            throw  new IdInvalidException("Permission da ton tai!");
+           if(permissionService.isSameName(permission)){
+               throw  new IdInvalidException("Permission da ton tai!");
+           }
         }
         return ResponseEntity.ok().body(permissionService.handleUpdatePermission(permission));
     }

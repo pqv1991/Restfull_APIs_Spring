@@ -28,7 +28,7 @@ public class ConvertToResCompanyDTO {
         return res;
     }
 
-    public static ResCompanyDTO convertToResDTO(Company company){
+    public static ResCompanyDTO convertToResCompanyDTO(Company company){
         ResCompanyDTO res = new ResCompanyDTO();
         res.setId(company.getId());
         res.setName(company.getName());

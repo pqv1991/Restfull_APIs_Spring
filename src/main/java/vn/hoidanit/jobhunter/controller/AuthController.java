@@ -2,19 +2,23 @@ package vn.hoidanit.jobhunter.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.dto.convertDTO.ConvertToResUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.login.ReqLoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.login.ResLoginDTO;
+import vn.hoidanit.jobhunter.domain.dto.user.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.service.user.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
@@ -28,11 +32,13 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil, UserService userService) {
+    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil, UserService userService, PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/auth/login")
@@ -47,7 +53,7 @@ public class AuthController {
         ResLoginDTO resLoginDTO = new ResLoginDTO();
         User userData = userService.handleGetUserByUsername(loginDto.getUsername());
         if(userData != null){
-            ResLoginDTO.LoginUser loginUser = new ResLoginDTO.LoginUser(userData.getId(), userData.getEmail(), userData.getName());
+            ResLoginDTO.LoginUser loginUser = new ResLoginDTO.LoginUser(userData.getId(), userData.getEmail(), userData.getName(), userData.getRole());
             resLoginDTO.setUser(loginUser);
         }
         String access_token= securityUtil.createAccessToken(authentication.getName(),resLoginDTO);
@@ -81,6 +87,7 @@ public class AuthController {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
+            userLogin.setRole(currentUserDB.getRole());
             userGetAccount.setUser(userLogin);
         }
         return ResponseEntity.ok().body(userGetAccount);
@@ -99,7 +106,7 @@ public class AuthController {
         ResLoginDTO resLoginDTO = new ResLoginDTO();
         User userData = userService.handleGetUserByUsername(email);
         if(userData != null){
-            ResLoginDTO.LoginUser loginUser = new ResLoginDTO.LoginUser(userData.getId(), userData.getEmail(), userData.getName());
+            ResLoginDTO.LoginUser loginUser = new ResLoginDTO.LoginUser(userData.getId(), userData.getEmail(), userData.getName(), userData.getRole());
             resLoginDTO.setUser(loginUser);
         }
         String access_token= securityUtil.createAccessToken(email,resLoginDTO);
@@ -139,4 +146,17 @@ public class AuthController {
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,deleteCookie.toString()).body(null);
     }
+
+    @PostMapping("auth/register")
+    @ApiMessage("REGISTER A NEW USER")
+    public ResponseEntity<ResCreateUserDTO> registerUser(@Valid @RequestBody User user) throws IdInvalidException{
+        if(userService.isEmailExist(user.getEmail())){
+            throw  new IdInvalidException("Email da ton tai, vui long chon email khac!");
+        }
+        String hashPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ConvertToResUserDTO.convertToResCreateDTO(userService.handleCreateUser(user)));
+    }
+
+
 }

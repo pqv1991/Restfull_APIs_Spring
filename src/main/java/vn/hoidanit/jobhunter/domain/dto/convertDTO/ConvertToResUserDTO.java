@@ -42,9 +42,10 @@ public class ConvertToResUserDTO {
         return res;
     }
 
-    public static ResUserDTO convertToResDTO(User user){
+    public static ResUserDTO convertToResUserDTO(User user){
         ResUserDTO res = new ResUserDTO();
         ResUserDTO.CompanyUser companyUser = new ResUserDTO.CompanyUser();
+        ResUserDTO.RoleUser roleUser = new ResUserDTO.RoleUser();
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -57,6 +58,11 @@ public class ConvertToResUserDTO {
             companyUser.setId(user.getCompany().getId());
             companyUser.setName(user.getCompany().getName());
             res.setCompany(companyUser);
+        }
+        if(user.getRole() !=null){
+            roleUser.setId(user.getRole().getId());
+            roleUser.setName(user.getRole().getName());
+            res.setRole(roleUser);
         }
         return res;
     }

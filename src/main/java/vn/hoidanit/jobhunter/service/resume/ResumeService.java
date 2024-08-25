@@ -18,4 +18,8 @@ public interface ResumeService {
     ResultPaginationDTO fetchAllResumes(Specification<Resume> spec, Pageable pageable);
 
     void handleDeleteResume(long id);
+
+    ResultPaginationDTO fetchResumeByUser(Pageable pageable);
+
+
 }
