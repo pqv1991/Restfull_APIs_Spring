@@ -61,8 +61,6 @@ public class UserServiceImpl implements UserService{
         }
         return null;
     }
-
-
     @Override
     public ResultPaginationDTO fetchAllUser(Specification<User> specification, Pageable pageable) {
         Page<User> userPage =this.userRepository.findAll(specification,pageable);
@@ -118,7 +116,6 @@ public class UserServiceImpl implements UserService{
             userRepository.save(currentUser);
         }
     }
-
     @Override
     public User getUserByRefreshTokenAndEmail(String refreshToken, String email) {
         return userRepository.findByRefreshTokenAndEmail(refreshToken,email);

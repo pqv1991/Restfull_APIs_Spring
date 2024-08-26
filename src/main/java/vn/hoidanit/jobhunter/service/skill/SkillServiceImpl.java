@@ -64,5 +64,7 @@ public class SkillServiceImpl implements SkillService{
         Optional<Skill> skillOptional = skillRepository.findById(id);
         Skill currentSkill = skillOptional.get();
         currentSkill.getJobs().forEach(job -> job.getSkills().remove(currentSkill));
+        currentSkill.getSubscribers().forEach(subs->subs.getSkills().remove(currentSkill));
+
         skillRepository.delete(currentSkill);}
 }

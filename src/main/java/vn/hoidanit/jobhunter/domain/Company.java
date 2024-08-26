@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -32,6 +33,7 @@ public class Company {
     private String createdBy;
     private String updatedBy;
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<User> users;
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @JsonIgnore
